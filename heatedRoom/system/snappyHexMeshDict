@@ -118,11 +118,11 @@ castellatedMeshControls
 
         {
             file "inlet.eMesh";
-            level 2;
+            level 0;
         }
         {
             file "outlet.eMesh";
-            level 2;
+            level 0;
         }
     );
 
@@ -147,7 +147,27 @@ castellatedMeshControls
 	    {
 		type wall;
 	    };
-	}
+		}
+		
+		        machine2
+        {
+            // Surface-wise min and max refinement level
+	    level (1 1);
+	    patchInfo
+	    {
+		type wall;
+	    };
+		}
+		
+		        machine3
+        {
+            // Surface-wise min and max refinement level
+	    level (1 1);
+	    patchInfo
+	    {
+		type wall;
+	    };
+		}
 
 	inlet
         {
