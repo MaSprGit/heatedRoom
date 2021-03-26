@@ -1,0 +1,98 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/ambientAir";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p
+    {
+        solver           	GAMG;
+	preconditioner		DIC;
+        smoother         	DICGaussSeidel;
+        tolerance        	1e-05;
+        relTol           	0.01;
+	minIter			3;
+
+    }
+
+
+    p_rgh
+    {
+     	solver          	GAMG;
+        tolerance		1e-05;
+        relTol          	0.01;
+        smoother        	DICGaussSeidel;
+        minIter                 3;
+        maxIter                 200;
+    }
+
+    "(p_rghFinal|pFinal)"
+    {
+     	$p_rgh;
+        tolerance	1e-06;
+        minIter         3;
+        relTol          0.0;
+        maxIter         200;
+    }
+
+
+    "(U|h|k|omega|nut)"
+    {
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        minIter         3;
+        tolerance       1e-06;
+        relTol          0.01;
+    }
+
+    "(U|h|k|omega|nut)Final"
+    {
+     	$U;
+        tolerance	1e-07;
+        minIter         3;
+     	relTol          0;
+    }
+
+
+
+    "rho.*"
+    {
+     	solver          PCG;
+        preconditioner  DIC;
+        tolerance	1e-07;
+        relTol          0;
+    }
+
+
+    cellDisplacement
+    {
+	solver          GAMG;
+	smoother        GaussSeidel;
+	tolerance       1e-7;
+	relTol          0.0;
+    }
+
+}
+PIMPLE
+{
+        momentumPredictor yes;
+        nOuterCorrectors 1;
+        nCorrectors     2;
+        nNonOrthogonalCorrectors 1;
+}
+
+
+// ************************************************************************* //

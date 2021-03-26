@@ -1,0 +1,56 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [ 0 0 0 1 0 0 0 ];
+
+TAir  293;
+TAirInlet  292;
+TWall   293;
+internalField   uniform $TAir;
+
+
+boundaryField
+{
+    "wall_.*"
+    {
+        type            fixedValue;
+	value		uniform $TWall;
+    }
+   "machine.*"
+    {
+        type            fixedGradient;
+        gradient        uniform 200;
+    }
+   inlet
+    {
+        type            fixedValue;
+        value           uniform $TAirInlet;
+    }
+   outlet
+    {
+        type            inletOutlet;
+        inletValue      $internalField;
+        value           $internalField;
+    }
+    ground
+    {
+        type            fixedValue;
+	value		uniform $TWall;
+    }
+}
+
+// ************************************************************************* //
