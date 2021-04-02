@@ -1,3 +1,3 @@
 #!/bin/sh
 
-mpirun -np 20 buoyantPimpleFoam -parallel > log &
+mpirun -np 6 buoyantPimpleFoam -parallel > log &
